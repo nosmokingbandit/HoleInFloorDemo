@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://c0fhalaqn1myk"]
+
+[ext_resource type="Shader" uid="uid://c5nqpabbxk8to" path="res://Materials/DepthMask.gdshader" id="1_mveiw"]
+
+[resource]
+render_priority = 127
+shader = ExtResource("1_mveiw")

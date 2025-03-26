@@ -1,0 +1,483 @@
+[gd_scene load_steps=31 format=3 uid="uid://bjv1d3jr1gjs3"]
+
+[ext_resource type="Shader" uid="uid://coneduia1pdqi" path="res://Materials/Skybox.gdshader" id="1_vy5pj"]
+[ext_resource type="Material" uid="uid://bx6qeabdhq2s" path="res://addons/kenney_prototype_tools/materials/dark/material_01.tres" id="2_bmxlf"]
+[ext_resource type="Script" uid="uid://b3u3403a8wx0i" path="res://Scripts/HoleCollision.gd" id="3_4kpch"]
+[ext_resource type="Script" uid="uid://b8etr2h3q5obe" path="res://Scripts/CharacterController.gd" id="4_grg3l"]
+[ext_resource type="Script" uid="uid://datnxnn2r4uec" path="res://Scripts/CupTrigger.gd" id="5_frkhe"]
+[ext_resource type="PackedScene" uid="uid://cprl7uroq7vgs" path="res://Meshes/Hole.blend" id="6_1p5hy"]
+[ext_resource type="Material" uid="uid://c0fhalaqn1myk" path="res://Materials/DepthMask.tres" id="7_h1m7h"]
+[ext_resource type="Script" uid="uid://dbk4l2xpscwfj" path="res://Scripts/KillPlane.gd" id="8_erwvk"]
+[ext_resource type="Script" uid="uid://2foj4suhhba1" path="res://Scripts/Collectible.gd" id="9_2w5on"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w17l7"]
+shader = ExtResource("1_vy5pj")
+shader_parameter/color_top = Color(0, 1, 1, 1)
+shader_parameter/color_horizon = Color(1, 1, 1, 1)
+shader_parameter/color_bottom = Color(0, 1, 1, 1)
+shader_parameter/exponent_factor_top = 1.0
+shader_parameter/exponent_factor_bottom = 1.0
+shader_parameter/intensity_amp = 1.0
+
+[sub_resource type="Sky" id="Sky_3vkm6"]
+sky_material = SubResource("ShaderMaterial_w17l7")
+
+[sub_resource type="Environment" id="Environment_3u1t0"]
+background_mode = 2
+sky = SubResource("Sky_3vkm6")
+ambient_light_source = 2
+ambient_light_color = Color(0.959315, 0.783048, 0.641191, 1)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_dc7mo"]
+bounce = 0.2
+
+[sub_resource type="QuadMesh" id="QuadMesh_2y2v6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_unxqb"]
+size = Vector3(1, 0.01, 1)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_w17l7"]
+bounce = 0.2
+absorbent = true
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_dc7mo"]
+points = PackedVector3Array(2, 0, 1.425, -0.5, 0, 0.4, -0.5, 0, -0.4, 2, 0, -1.425, 2, -2, 1.425, -0.5, -2, 0.4, -0.5, -2, -0.4, 2, -2, -1.425)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_unxqb"]
+height = 1.0
+radius = 2.25
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qax6y"]
+radius = 2.25
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_2y2v6"]
+top_radius = 0.6
+bottom_radius = 0.6
+height = 0.01
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_3u1t0"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_unxqb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2y2v6"]
+albedo_color = Color(0.67451, 0.352941, 0.12549, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dc7mo"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_3vkm6"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_3u1t0"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_opm76"]
+size = Vector3(1, 1, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ywdry"]
+size = Vector3(1, 1, 3)
+
+[sub_resource type="PrismMesh" id="PrismMesh_opm76"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ywdry"]
+points = PackedVector3Array(0, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[node name="Scene" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_3u1t0")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(1, 0, 0, 0, 0.642788, 0.766044, 0, -0.766044, 0.642788, 0.466827, 21.1669, 20.9641)
+light_energy = 2.89
+light_specular = 0.0
+shadow_enabled = true
+sky_mode = 1
+
+[node name="Floor" type="StaticBody3D" parent="."]
+transform = Transform3D(100, 0, 0, 0, -4.37114e-06, 100, 0, -100, -4.37114e-06, 0, 0, 0)
+physics_material_override = SubResource("PhysicsMaterial_dc7mo")
+
+[node name="Mesh" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 3.63798e-12, 1, 0, 0, 0)
+mesh = SubResource("QuadMesh_2y2v6")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("2_bmxlf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.005)
+shape = SubResource("BoxShape3D_unxqb")
+
+[node name="Hole" type="Node" parent="."]
+
+[node name="InnerCollisionShape" type="StaticBody3D" parent="Hole"]
+collision_layer = 8
+collision_mask = 2
+physics_material_override = SubResource("PhysicsMaterial_w17l7")
+script = ExtResource("3_4kpch")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Hole/InnerCollisionShape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_dc7mo")
+debug_color = Color(0.898632, 2.27177e-05, 0.626245, 1)
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Hole/InnerCollisionShape"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1.5, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_dc7mo")
+debug_color = Color(0.898632, 2.27177e-05, 0.626245, 1)
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Hole/InnerCollisionShape"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55671e-08, 0, -1.5)
+shape = SubResource("ConvexPolygonShape3D_dc7mo")
+debug_color = Color(0.898632, 2.27177e-05, 0.626245, 1)
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Hole/InnerCollisionShape"]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 6.55671e-08, 0, 1.5)
+shape = SubResource("ConvexPolygonShape3D_dc7mo")
+debug_color = Color(0.898632, 2.27177e-05, 0.626245, 1)
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="Hole/InnerCollisionShape"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 1.06066, 0, -1.06066)
+shape = SubResource("ConvexPolygonShape3D_dc7mo")
+debug_color = Color(0.898632, 2.27177e-05, 0.626245, 1)
+
+[node name="CollisionShape3D7" type="CollisionShape3D" parent="Hole/InnerCollisionShape"]
+transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, -1.06066, 0, 1.06066)
+shape = SubResource("ConvexPolygonShape3D_dc7mo")
+debug_color = Color(0.898632, 2.27177e-05, 0.626245, 1)
+
+[node name="CollisionShape3D8" type="CollisionShape3D" parent="Hole/InnerCollisionShape"]
+transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, -1.06066, 0, -1.06066)
+shape = SubResource("ConvexPolygonShape3D_dc7mo")
+debug_color = Color(0.898632, 2.27177e-05, 0.626245, 1)
+
+[node name="CollisionShape3D9" type="CollisionShape3D" parent="Hole/InnerCollisionShape"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 1.06066, 0, 1.06066)
+shape = SubResource("ConvexPolygonShape3D_dc7mo")
+debug_color = Color(0.898632, 2.27177e-05, 0.626245, 1)
+
+[node name="HoleCharacter" type="CharacterBody3D" parent="Hole"]
+collision_layer = 4
+script = ExtResource("4_grg3l")
+
+[node name="WallCollider" type="CollisionShape3D" parent="Hole/HoleCharacter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+visible = false
+shape = SubResource("CylinderShape3D_unxqb")
+debug_color = Color(0, 0, 0, 0.42)
+
+[node name="CollisionSwapArea" type="Area3D" parent="Hole/HoleCharacter"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("5_frkhe")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hole/HoleCharacter/CollisionSwapArea"]
+shape = SubResource("SphereShape3D_qax6y")
+debug_color = Color(0, 0, 0, 1)
+
+[node name="Camera3D" type="Camera3D" parent="Hole/HoleCharacter"]
+transform = Transform3D(-1, -6.18172e-08, 6.18172e-08, 0, 0.707107, 0.707107, -8.74228e-08, 0.707107, -0.707107, 0, 10.27, -10.437)
+visible = false
+
+[node name="b_HoleCylinderMesh" parent="Hole/HoleCharacter" instance=ExtResource("6_1p5hy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.001, 0)
+
+[node name="Cylinder" parent="Hole/HoleCharacter/b_HoleCylinderMesh" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+
+[node name="DepthMaskMesh" type="MeshInstance3D" parent="Hole/HoleCharacter"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.01, 0)
+layers = 2
+mesh = SubResource("CylinderMesh_2y2v6")
+skeleton = NodePath("../../..")
+surface_material_override/0 = ExtResource("7_h1m7h")
+
+[node name="KillPlane" type="Area3D" parent="Hole/HoleCharacter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -50, 0)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("8_erwvk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hole/HoleCharacter/KillPlane"]
+shape = SubResource("WorldBoundaryShape3D_3u1t0")
+
+[node name="Box" type="RigidBody3D" parent="." groups=["Collectible"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.04747, 0.657899, -5.10687)
+collision_layer = 2
+collision_mask = 11
+mass = 10.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("9_2w5on")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Box"]
+mesh = SubResource("BoxMesh_unxqb")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_2y2v6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box"]
+shape = SubResource("BoxShape3D_dc7mo")
+
+[node name="Box2" type="RigidBody3D" parent="." groups=["Collectible"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.59711, 0.657899, -5.10687)
+collision_layer = 2
+collision_mask = 11
+mass = 10.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("9_2w5on")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Box2"]
+mesh = SubResource("BoxMesh_unxqb")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_2y2v6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box2"]
+shape = SubResource("BoxShape3D_dc7mo")
+
+[node name="Box3" type="RigidBody3D" parent="." groups=["Collectible"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.28468, 0.657899, -5.10687)
+collision_layer = 2
+collision_mask = 11
+mass = 10.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("9_2w5on")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Box3"]
+mesh = SubResource("BoxMesh_unxqb")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_2y2v6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box3"]
+shape = SubResource("BoxShape3D_dc7mo")
+
+[node name="Box4" type="RigidBody3D" parent="." groups=["Collectible"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2787, 0.657899, -5.10687)
+collision_layer = 2
+collision_mask = 11
+mass = 10.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("9_2w5on")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Box4"]
+mesh = SubResource("BoxMesh_unxqb")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_2y2v6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box4"]
+shape = SubResource("BoxShape3D_dc7mo")
+
+[node name="Sphere2" type="RigidBody3D" parent="." groups=["Collectible"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.6779, 2.20939, 4.43354)
+collision_layer = 2
+collision_mask = 11
+mass = 10.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("9_2w5on")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Sphere2"]
+mesh = SubResource("SphereMesh_3vkm6")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_2y2v6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sphere2"]
+shape = SubResource("SphereShape3D_3u1t0")
+
+[node name="Sphere6" type="RigidBody3D" parent="." groups=["Collectible"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.04416, 3.24304, 3.09637)
+collision_layer = 2
+collision_mask = 11
+mass = 10.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("9_2w5on")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Sphere6"]
+mesh = SubResource("SphereMesh_3vkm6")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_2y2v6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sphere6"]
+shape = SubResource("SphereShape3D_3u1t0")
+
+[node name="Sphere" type="RigidBody3D" parent="." groups=["Collectible"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.33897, 2.73852, 4.3115)
+collision_layer = 2
+collision_mask = 11
+mass = 10.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("9_2w5on")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Sphere"]
+mesh = SubResource("SphereMesh_3vkm6")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_2y2v6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sphere"]
+shape = SubResource("SphereShape3D_3u1t0")
+
+[node name="TallBox" type="RigidBody3D" parent="." groups=["Collectible"]]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.04747, 1.42096, 5.84907)
+visible = false
+collision_layer = 2
+collision_mask = 11
+mass = 10.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("9_2w5on")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TallBox"]
+mesh = SubResource("BoxMesh_opm76")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_2y2v6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TallBox"]
+shape = SubResource("BoxShape3D_ywdry")
+
+[node name="TallBox2" type="RigidBody3D" parent="." groups=["Collectible"]]
+transform = Transform3D(1.91069e-15, 1, -4.37114e-08, 4.37114e-08, -4.37114e-08, -1, -1, 0, -4.37114e-08, -0.164718, 3.28162, 5.66623)
+visible = false
+collision_layer = 2
+collision_mask = 11
+mass = 10.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("9_2w5on")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TallBox2"]
+mesh = SubResource("BoxMesh_opm76")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_2y2v6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TallBox2"]
+shape = SubResource("BoxShape3D_ywdry")
+
+[node name="Sphere3" type="RigidBody3D" parent="." groups=["Collectible"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.62734, 0.89765, -3.41714)
+collision_layer = 2
+collision_mask = 11
+mass = 10.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("9_2w5on")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Sphere3"]
+mesh = SubResource("SphereMesh_3vkm6")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_2y2v6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sphere3"]
+shape = SubResource("SphereShape3D_3u1t0")
+
+[node name="Sphere4" type="RigidBody3D" parent="." groups=["Collectible"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.74994, 0.89765, -3.41714)
+collision_layer = 2
+collision_mask = 11
+mass = 10.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("9_2w5on")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Sphere4"]
+mesh = SubResource("SphereMesh_3vkm6")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_2y2v6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sphere4"]
+shape = SubResource("SphereShape3D_3u1t0")
+
+[node name="Sphere5" type="RigidBody3D" parent="." groups=["Collectible"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.0884, 0.89765, -3.41714)
+collision_layer = 2
+collision_mask = 11
+mass = 10.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("9_2w5on")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Sphere5"]
+mesh = SubResource("SphereMesh_3vkm6")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_2y2v6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sphere5"]
+shape = SubResource("SphereShape3D_3u1t0")
+
+[node name="Prism2" type="RigidBody3D" parent="." groups=["Collectible"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.93146, 1.25905, 0.671446)
+collision_layer = 2
+collision_mask = 11
+mass = 10.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("9_2w5on")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Prism2"]
+mesh = SubResource("PrismMesh_opm76")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_2y2v6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Prism2"]
+shape = SubResource("ConvexPolygonShape3D_ywdry")
+debug_color = Color(0, 0, 0, 0.42)
+
+[node name="Prism" type="RigidBody3D" parent="." groups=["Collectible"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.70337, 1.2075, 0.335723)
+collision_layer = 2
+collision_mask = 11
+mass = 10.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("9_2w5on")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Prism"]
+mesh = SubResource("PrismMesh_opm76")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_2y2v6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Prism"]
+shape = SubResource("ConvexPolygonShape3D_ywdry")
+debug_color = Color(0, 0, 0, 0.42)
+
+[node name="Prism3" type="RigidBody3D" parent="." groups=["Collectible"]]
+transform = Transform3D(0.998662, 0.0517085, -2.26025e-09, 0, -4.37114e-08, -1, -0.0517085, 0.998662, -4.36529e-08, -8.70337, 1.2075, 1.83806)
+collision_layer = 2
+collision_mask = 11
+mass = 10.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("9_2w5on")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Prism3"]
+mesh = SubResource("PrismMesh_opm76")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_2y2v6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Prism3"]
+shape = SubResource("ConvexPolygonShape3D_ywdry")
+debug_color = Color(0, 0, 0, 0.42)
+
+[node name="Prism4" type="RigidBody3D" parent="." groups=["Collectible"]]
+transform = Transform3D(-4.36529e-08, 4.14511e-08, 1, 0.998662, 0.0517085, 4.14511e-08, -0.0517085, 0.998662, -4.36529e-08, -8.70337, 1.2075, -1.24428)
+collision_layer = 2
+collision_mask = 11
+mass = 10.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("9_2w5on")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Prism4"]
+mesh = SubResource("PrismMesh_opm76")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_2y2v6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Prism4"]
+shape = SubResource("ConvexPolygonShape3D_ywdry")
+debug_color = Color(0, 0, 0, 0.42)
+
+[connection signal="body_entered" from="Hole/HoleCharacter/CollisionSwapArea" to="Hole/HoleCharacter/CollisionSwapArea" method="_on_body_entered"]
+[connection signal="body_exited" from="Hole/HoleCharacter/CollisionSwapArea" to="Hole/HoleCharacter/CollisionSwapArea" method="_on_body_exited"]
+[connection signal="body_entered" from="Hole/HoleCharacter/KillPlane" to="Hole/HoleCharacter/KillPlane" method="_on_body_entered"]
+
+[editable path="Hole/HoleCharacter/b_HoleCylinderMesh"]
